@@ -2,11 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Friends of Satoshi | Contact</title>
-        <meta name="description" content="Contact the Friends of Satoshi team." />
+        <title>Friends of Satoshi | Verify</title>
+        <meta name="description" content="Building a collaborative community." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/contact.combined.0001.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/about.combined.0001.css" rel="stylesheet" type="text/css" media="all" />
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     </head>
     <body data-smooth-scroll-offset="77">
@@ -61,13 +62,83 @@
             </div>
         </div>
         <div class="main-container">
-            <section class="cover imagebg text-center parallax height-70" data-overlay="3">
-                <div class="background-image-holder"><img alt="background" src="img/sea-water.jpg"></div>
-                <div class="container pos-vertical-center">
+            <section class="bg--dark">
+                <div class="container">
                     <div class="row">
-                        <div class="col-sm-9 col-md-8">
-                            <h1>Give us a call or shoot us an email.</h1>
-                            <p class="lead">e. <a href="malito:hello@friendsofsatoshi.com">hello@friendsofsatoshi.com</a><br><span>p</span>. 402.817.1580</p>
+                        <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                            <article>
+                                <div class="article__title text-center">
+                                    <h1 class="h2">Verify Friends of Satoshi Coin</h1>
+     <?php
+
+
+$input = $_REQUEST['search'];
+
+if (!$input) {
+	echo 'Please enter valid firstbits';
+  echo '</br><a href=https://www.friendsofsatoshi.com/verify">Back</a>';
+  exit;
+}
+
+
+
+$string = file_get_contents("coins.json");
+$json_a = json_decode($string, true);
+
+
+$coins = $json_a['founders'];
+
+
+
+function find($coins, $input) {
+  foreach($coins as $item) {
+    $matches = preg_grep("/$input/", $item);
+    if($matches) {
+      return($item);
+    }
+  }
+}
+
+$found = (find($coins, $input));
+
+if ($found) {
+
+  echo '
+  </br></br></br></br><div class="container"><div class="col-sm-6 col-sm-offset-3"><div class="panel-footer"><center>';
+  echo 'Address: ' . $found['address'] . '</br>';
+  echo 'Serial Number: ' . $found['serial'] . '</br>';
+  echo 'Year: ' .$found['year'] . '</br>';
+  echo 'Plating: ' . $found['plate'] . '</br>';
+  echo 'Material: ' . $found['material'] . '</br>';
+  echo 'Membership: ' . $found['membership'] . '</br>';
+
+  $addressinfo = file_get_contents('https://blockchain.info/address/' . $found['address'] . '?format=json');
+  $addressdecoded = json_decode($addressinfo, true);
+  $bcbal = $addressdecoded['final_balance'] / 100000000;
+
+  $txs = $addressdecoded['txs'];
+
+
+
+  echo 'Balance: ' . $bcbal . '</br>';
+  $USD = file_get_contents("https://blockchain.info/ticker");
+  $price = json_decode($USD, true);
+  $price1 = $price['USD']['last'];
+  echo 'Total USD Value: ' . $bcbal * $price1 . '</br>';
+
+  echo '</br><a href="https://www.friendsofsatoshi.com/verify">Back</a></center>
+  </div></div></div>
+  ';
+}
+else {
+	echo 'No coins found';
+  echo '</br><a href="https://www.friendsofsatoshi.com/verify">Back</a>';
+}
+
+
+?>
+
+                            </article>
                         </div>
                     </div>
                 </div>
@@ -88,7 +159,8 @@
                 </div>
             </footer>
         </div>
-        <script src="js/contact.combined.0001.js"></script>
+       
+        <script src="js/about.combined.0001.js"></script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-85347747-1', 'auto'); ga('send', 'pageview');
         </script>
