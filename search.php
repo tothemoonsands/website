@@ -76,7 +76,7 @@ $input = $_REQUEST['search'];
 
 if (!$input) {
 	echo 'Please enter valid firstbits';
-  echo '</br><a href=https://www.friendsofsatoshi.com/verify">Back</a>';
+  echo '</br><a href="https://www.friendsofsatoshi.com/verify">Back</a>';
   exit;
 }
 
